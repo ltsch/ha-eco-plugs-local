@@ -12,6 +12,7 @@ Tunable values are in `const.py`.
 | `switch.py` | The entity and its state machine |
 | `config_flow.py` | Discovery-based setup and options |
 | `diagnostics.py` | A redacted copy of the last beacon |
+| `brand/` | Icons in HA's local brand-image format (original artwork, not vendor logos) |
 | `tools/ecoplugs.py` | A CLI built on `protocol.py`. It loads `protocol.py` by path, so HA's `__init__` never runs. |
 
 ## Decisions

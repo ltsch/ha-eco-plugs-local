@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Brand icon (light and dark), shown by Home Assistant 2026.3 and later.
+
 ## 0.1.0 (2026-10-18)
 
 First release, tested on one device (see docs/COMPATIBILITY.md).
