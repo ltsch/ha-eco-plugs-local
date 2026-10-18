@@ -18,5 +18,5 @@ body:
     id: logs
     attributes:
       label: Debug logs and diagnostics (scrub identifiers)
-      description: Enable `custom_components.eco_plugs_local: debug`; diagnostics are redacted already.
+      description: "Enable debug logging from the integration card (⋮ → Enable debug logging). Diagnostics are already redacted."
       render: text
