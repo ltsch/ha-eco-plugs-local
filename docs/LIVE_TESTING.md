@@ -61,8 +61,14 @@ Identifiers are omitted.
 6. After an HA Core restart, the switch showed the beacon-derived state with a fresh
    `last_changed` and `restored=False`. The *unavailable* window was shorter than
    the 0.5 s polling interval.
+7. Inconclusive. A bridge rule on the hypervisor dropped all 25 of the plug's
+   frames to the HA VM's virtual NIC for 50 s, and HA stayed available. The VM
+   also has a passed-through USB Wi-Fi adapter, which probably received the same
+   broadcasts. That would also mean every beacon arrived twice, which led to the
+   duplicate-copy fix in 0.1.0. Not re-run.
 
-**Not yet observed:** cloud support on, `0x17` alone, a skewed plug clock, other
+**Not yet observed:** going *unavailable* on a live instance (step 7), cloud
+support on, `0x17` alone, a skewed plug clock, other
 firmware, and other models.
 
 ## Procedures
