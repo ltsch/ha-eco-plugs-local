@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.1 (2026-10-18)
+
 - Fix: the Bug report issue template was invalid YAML and didn't appear on GitHub.
 - Brand icon (light and dark), shown by Home Assistant 2026.3 and later.
 
