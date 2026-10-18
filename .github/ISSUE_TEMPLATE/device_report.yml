@@ -1,0 +1,39 @@
+name: Device report
+description: Report whether your plug works (or doesn't).
+labels: [device-report]
+body:
+  - type: markdown
+    attributes:
+      value: Do not paste MACs, IPs, tokens or names. `tools/ecoplugs.py dump` masks them.
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware (brand, model, outlets, dimmer?)
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: ECO Plugs app version
+  - type: dropdown
+    id: cloud
+    attributes:
+      label: Cloud support setting in the app
+      options: ["off", "on", "unknown"]
+  - type: dropdown
+    id: beacon
+    attributes:
+      label: Does `tools/ecoplugs.py listen` see it and track state?
+      options: ["yes", "no", "partially"]
+  - type: dropdown
+    id: command
+    attributes:
+      label: Does `tools/ecoplugs.py on/off` get an ACK and switch it?
+      options: ["yes", "no", "not tried"]
+  - type: textarea
+    id: dump
+    attributes:
+      label: Output of `python3 tools/ecoplugs.py dump`
+      render: text
+    validations:
+      required: true

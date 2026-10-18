@@ -1,0 +1,22 @@
+name: Bug report
+description: Something in the integration misbehaves.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Integration version, Home Assistant version, plug firmware
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Debug logs and diagnostics (scrub identifiers)
+      description: Enable `custom_components.eco_plugs_local: debug`; diagnostics are redacted already.
+      render: text

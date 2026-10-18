@@ -1,0 +1,30 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Choose a plug",
+        "description": "These Eco Plugs devices were heard broadcasting on your network.",
+        "data": {
+          "device": "Plug"
+        }
+      }
+    },
+    "abort": {
+      "no_devices_found": "No Eco Plugs beacons were heard in {seconds} seconds. Check that the plug is powered and on the same subnet as Home Assistant, and that Home Assistant uses host networking.",
+      "port_unavailable": "Could not listen on UDP port {port}. Another program on this host may be using it.",
+      "already_configured": "This plug is already configured.",
+      "already_in_progress": "This plug is already being set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "debounce": "Consecutive beacons required to accept a state change",
+          "stale_timeout": "Seconds without a beacon before the plug is unavailable"
+        },
+        "title": "Eco Plugs (Local) options"
+      }
+    }
+  }
+}

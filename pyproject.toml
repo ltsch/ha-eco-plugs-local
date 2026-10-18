@@ -1,0 +1,12 @@
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C4", "RUF", "EXE"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["custom_components"]
+known-third-party = ["homeassistant", "pytest_homeassistant_custom_component"]
+combine-as-imports = true
