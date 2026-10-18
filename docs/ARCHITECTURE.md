@@ -30,6 +30,9 @@ Tunable values are in `const.py`.
 - **Nothing device-specific is stored.** An entry holds the MAC and device id. Each
   command is rebuilt from the latest beacon, so DHCP, token and firmware changes
   need no reconfiguration.
+- **Duplicate copies are dropped.** A host on two networks (wired plus Wi-Fi, say)
+  receives each broadcast twice. Copies are identified by the per-packet key and
+  device clock, and dropped, so they can't satisfy the debounce on their own.
 - **Bounded cache.** Beacons are unauthenticated. To keep forged MACs from growing the
   device cache, unsubscribed sightings expire and the cache is capped.
 - **State is never restored or assumed.** There's no `RestoreEntity` and no

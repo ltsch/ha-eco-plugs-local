@@ -22,6 +22,7 @@ from .protocol import (
     COMMAND_SOURCE_PORT,
     COMMAND_SUBTYPES,
     Beacon,
+    beacon_fingerprint,
     build_set_power,
     parse_beacon,
     parse_status_reply,
@@ -46,6 +47,7 @@ class Sighting:
     beacon: Beacon
     host: str  # source address of the beacon datagram
     monotonic: float
+    fingerprint: bytes = b""  # per-packet XOR key; identifies duplicate copies
 
 
 BeaconCallback = Callable[[Sighting], None]
@@ -132,7 +134,13 @@ class EcoPlugsHub:
         beacon = parse_beacon(data)
         if beacon is None:
             return
-        sighting = Sighting(beacon, addr[0], time.monotonic())
+        # A multi-homed host (e.g. wired + Wi-Fi) receives each broadcast once per
+        # interface; counting copies would defeat the debounce.
+        fingerprint = beacon_fingerprint(data)
+        previous = self.sightings.get(beacon.unique_id)
+        if previous is not None and previous.fingerprint == fingerprint:
+            return
+        sighting = Sighting(beacon, addr[0], time.monotonic(), fingerprint)
         if beacon.unique_id not in self.sightings:
             self._prune(sighting.monotonic)
         self.sightings[beacon.unique_id] = sighting

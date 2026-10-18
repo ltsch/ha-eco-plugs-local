@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from custom_components.eco_plugs_local import protocol as P
 
 FAKE = {
@@ -19,7 +21,9 @@ FAKE = {
 }
 
 
-def make_beacon(on: bool = True, key: bytes = b"\x5a\xc3\x19\x7e", **over) -> bytes:
+def make_beacon(on: bool = True, key: bytes | None = None, **over) -> bytes:
+    """Each call gets a fresh random XOR key, like a real plug, unless ``key`` is given."""
+    key = os.urandom(4) if key is None else key
     f = {**FAKE, **over}
     d = bytearray(P.BEACON_LENGTH)
     d[5:9] = b"\x55\xaa\x55\xaa"

@@ -69,6 +69,13 @@ def beacon_xor(payload: bytes) -> bytes:
     return bytes(out)
 
 
+def beacon_fingerprint(payload: bytes) -> bytes:
+    """Per-packet random key plus device clock: equal only for copies of one beacon."""
+    return bytes(
+        payload[_BEACON_KEY_OFFSET : _BEACON_KEY_OFFSET + 4] + payload[0x1C:0x20]
+    )
+
+
 def beacon_checksum(decoded: bytes) -> int:
     """Vendor CPPCheckSum (PROTOCOL.md §2.1)."""
     return sum(decoded[_BEACON_WINDOW_START:_BEACON_WINDOW_END])
