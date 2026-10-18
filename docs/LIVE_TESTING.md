@@ -54,6 +54,8 @@ on, `0x17` alone, a skewed plug clock, other firmware, and other models.
 
 ## Procedures
 
+### CLI
+
 Run these from a clone of the repo on the plug's subnet. Stop any HA instance using
 this integration on the same host first, because both need port 9090.
 
@@ -80,6 +82,39 @@ To capture traffic (keep captures out of the repo):
 ```bash
 tcpdump -i <iface> -w eco.pcap 'udp and (port 10228 or port 10229 or port 1022 or port 9090)'
 ```
+
+### Home Assistant acceptance test
+
+Run this on a real HA instance before each release. Before you start, disable any
+other automation or cloud path that controls the same plug, or it will fight the
+test.
+
+1. **Install** following the [README](../README.md#install). Then add the plug from
+   **Add integration**, and on the integration card choose **⋮ → Enable debug
+   logging**.
+2. **Device info:** the device page shows the plug's firmware, and the switch
+   matches the vendor app.
+3. **Push updates:** toggle the plug from the app or its button. HA should follow
+   within about two beacons.
+4. **No-op command:** in **Developer tools → Actions**, send the state the plug is
+   already in (`switch.turn_on` or `switch.turn_off`). It should succeed with no
+   error.
+5. **Real toggle:** send the opposite state. The load should change physically, and
+   HA should update immediately. Restore the state the load needs.
+6. **Restart:** restart HA. The switch should be *unavailable* briefly, then show the
+   real state. It must never show a restored value.
+7. **Staleness (optional):** unplug the plug. The switch should go *unavailable*
+   after the stale timeout. Plug it back in, and the real state should return on the
+   first beacon.
+8. **Record:** add an evidence-log entry with a pass or fail for each step, attach
+   **⋮ → Download diagnostics** (it's redacted), include any `eco_plugs_local` log
+   lines, and turn debug logging off.
+
+If step 1 finds no plug, broadcasts aren't reaching HA. See the
+[README troubleshooting](../README.md#troubleshooting). A VM needs a bridged
+network, not NAT.
+
+### Writing an entry
 
 An entry should record the date, firmware, the cloud-support setting, the exact
 command, the reply, what the next beacon said, and whether anyone checked the load
