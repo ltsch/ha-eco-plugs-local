@@ -46,7 +46,8 @@ Setup is in [CONTRIBUTING.md](CONTRIBUTING.md#setup).
 ruff check . && ruff format --check . && pytest -q
 ```
 
-CI runs the same checks, plus hassfest and HACS validation.
+CI runs the same checks, plus hassfest and HACS validation. `main` is protected:
+changes land through a pull request with passing checks (squash merge only).
 
 ## Done means
 
