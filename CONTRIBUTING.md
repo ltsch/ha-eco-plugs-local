@@ -22,9 +22,11 @@ instance's `config/custom_components/`.
 
 ## Releases
 
-1. Bump `version` in `custom_components/eco_plugs_local/manifest.json`.
-2. Move the *Unreleased* entries in `CHANGELOG.md` under the new version.
-3. Tag `vX.Y.Z` and publish a GitHub release. HACS installs from releases.
+1. Pass the [Home Assistant acceptance test](docs/LIVE_TESTING.md#home-assistant-acceptance-test)
+   and log the result.
+2. Bump `version` in `custom_components/eco_plugs_local/manifest.json`.
+3. Move the *Unreleased* entries in `CHANGELOG.md` under the new version.
+4. Tag `vX.Y.Z` and publish a GitHub release. HACS installs from releases.
 
 ## Legal
 

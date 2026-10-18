@@ -1,12 +1,17 @@
 # Eco Plugs (Local) for Home Assistant
 
-Local control of **Eco Plugs** (KAB) Wi-Fi smart plugs. There's no cloud, no Alexa,
-and no vendor account involved. Home Assistant reads the relay state from the beacon
-the plug broadcasts on your LAN. It switches the plug with the same UDP command the
-official app uses, then waits for the plug to confirm.
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ltsch&repository=ha-eco-plugs-local&category=integration)
 
-This is for current-firmware plugs that use the **"ECO Plugs"** Android app. See
-[COMPATIBILITY.md](docs/COMPATIBILITY.md).
+Local control of Wi-Fi switches, plugs and timers managed by the **Eco Plugs** (KAB)
+app, such as DEWENWILS timer boxes. There's no cloud, no Alexa, and no vendor
+account involved. Home Assistant reads the relay state from the beacon each device
+broadcasts on your LAN. It switches the device with the same UDP command the
+official app uses, then waits for the device to confirm. (These docs call any such
+device a "plug".)
+
+It's for current-firmware devices set up in the **"ECO Plugs"** app. **This is an
+early release, tested on a single device.** Please report yours (see
+[Testing and feedback](#testing-and-feedback)).
 
 ## Why
 
@@ -35,9 +40,9 @@ only reports what the plug itself says:
 
 ## Install
 
-1. HACS → ⋮ → **Custom repositories**. Add
-   `https://github.com/ltsch/ha-eco-plugs-local` as type **Integration**, install
-   **Eco Plugs (Local)**, then restart Home Assistant.
+1. Click **Open in HACS** at the top of this page. Alternatively, go to HACS → ⋮ →
+   **Custom repositories** and add `https://github.com/ltsch/ha-eco-plugs-local` as
+   type **Integration**. Install **Eco Plugs (Local)**, then restart Home Assistant.
 2. **Settings → Devices & services → Add integration → Eco Plugs (Local)**, then pick
    a plug from the ones it hears.
 
@@ -77,6 +82,22 @@ python3 tools/ecoplugs.py listen
 For debug logs, add `custom_components.eco_plugs_local: debug` under `logger:`.
 The CLI's `on`/`off` switch the real load. Read
 [LIVE_TESTING.md](docs/LIVE_TESTING.md#safety-first) first.
+
+## Testing and feedback
+
+Devices known to work are listed in **[COMPATIBILITY.md](docs/COMPATIBILITY.md)**.
+Only one has been tested so far, so every report helps, including "it doesn't work".
+
+- **Device works, or doesn't:** open a
+  [Device report](https://github.com/ltsch/ha-eco-plugs-local/issues/new?template=device_report.yml).
+  It asks for the product name as sold, the app version, and the output of
+  `tools/ecoplugs.py dump`. That output hides your MAC, IP, pairing token and names.
+  Reports end up in COMPATIBILITY.md.
+- **Something misbehaves in HA:** open a
+  [Bug report](https://github.com/ltsch/ha-eco-plugs-local/issues/new?template=bug_report.yml)
+  with the diagnostics download from the integration card. It's redacted.
+- **Please don't post** MACs, IPs, pairing tokens, packet captures, or logs you
+  haven't scrubbed.
 
 ## Security
 

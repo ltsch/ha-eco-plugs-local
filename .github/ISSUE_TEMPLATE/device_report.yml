@@ -8,13 +8,22 @@ body:
   - type: input
     id: hardware
     attributes:
-      label: Hardware (brand, model, outlets, dimmer?)
+      label: Device, as sold
+      description: Brand and product name from the box or listing, e.g. "DEWENWILS Pool Pump Timer, Outdoor Smart Wi-Fi Timer Box 40A".
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Device type
+      options: ["plug-in outlet", "multi-outlet / power strip", "hardwired switch or timer box", "dimmer", "other"]
     validations:
       required: true
   - type: input
     id: app
     attributes:
       label: ECO Plugs app version
+      description: In the app's settings or about screen.
   - type: dropdown
     id: cloud
     attributes:
@@ -30,6 +39,15 @@ body:
     attributes:
       label: Does `tools/ecoplugs.py on/off` get an ACK and switch it?
       options: ["yes", "no", "not tried"]
+  - type: dropdown
+    id: ha
+    attributes:
+      label: Does the integration discover it and control it in Home Assistant?
+      options: ["yes", "no", "partially", "not tried"]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (what didn't work, anything unusual)
   - type: textarea
     id: dump
     attributes:
