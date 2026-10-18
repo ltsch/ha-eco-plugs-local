@@ -154,3 +154,17 @@ async def test_hub_command_port_not_shareable(hass: HomeAssistant, fake_plug) ->
         with pytest.raises(OSError):  # another process must not get the replies
             hub_mod._udp_socket(port, share=True).close()
     await hub.async_release()
+
+
+async def test_duplicate_beacon_copies_ignored(hass: HomeAssistant) -> None:
+    """The same broadcast heard on two interfaces must count once."""
+    hub = get_hub(hass)
+    seen = []
+    hub.subscribe("020000000001", seen.append)
+    raw = make_beacon(on=False, key=b"\x01\x02\x03\x04")
+    hub._on_beacon_datagram(raw, ("127.0.0.1", 10229))
+    hub._on_beacon_datagram(raw, ("127.0.0.1", 10229))
+    hub._on_beacon_datagram(
+        make_beacon(on=False, key=b"\x05\x06\x07\x08"), ("127.0.0.1", 10229)
+    )
+    assert len(seen) == 2

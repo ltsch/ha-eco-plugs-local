@@ -1,4 +1,4 @@
-"""Local LAN control for Eco Plugs (KAB) smart plugs, no cloud required."""
+"""Local LAN control for Eco Plugs (KAB) devices, no cloud required."""
 
 from __future__ import annotations
 

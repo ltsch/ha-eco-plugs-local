@@ -59,7 +59,7 @@ class EcoPlugSwitch(SwitchEntity):
             identifiers={(DOMAIN, self._uid)},
             connections={(CONNECTION_NETWORK_MAC, mac)},
             manufacturer=MANUFACTURER,
-            model="Eco Plugs smart plug",
+            model="Eco Plugs device",
             name=entry.title,
             serial_number=entry.data.get(CONF_DEVICE_ID),
         )
