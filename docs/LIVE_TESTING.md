@@ -19,7 +19,7 @@ These plugs drive real loads, such as pumps and heaters.
 
 | | |
 |---|---|
-| Hardware | Eco Plugs single-outlet plug (DEWENWILS), switching a well pump |
+| Hardware | DEWENWILS Pool Pump Timer, Outdoor Smart Wi-Fi Timer Box (40A, 120–277V, 2HP), hardwired to a well pump |
 | Firmware | V2.3.0 |
 | App | 2.98.260526.81124, with "cloud support" **off** for every command test |
 | Network | consumer mesh Wi-Fi, with a wired Linux controller on the same subnet |
