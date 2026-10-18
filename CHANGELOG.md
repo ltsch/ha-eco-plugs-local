@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Docs: Home Assistant acceptance test in LIVE_TESTING.md.
+- Docs: Home Assistant acceptance test in LIVE_TESTING.md, and its first result.
 
 ## 0.1.0
 

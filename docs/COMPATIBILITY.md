@@ -5,7 +5,7 @@ To add a result, open a **Device report** issue and include the output of
 
 | Hardware | Firmware | App | Beacon | Command | Cloud support | Date |
 |---|---|---|---|---|---|---|
-| Eco Plugs single-outlet plug (DEWENWILS) | V2.3.0 | 2.98.260526.81124 | ✅ | ✅ ACK + physical | off | 2026-10-18 |
+| Eco Plugs single-outlet plug (DEWENWILS) | V2.3.0 | 2.98.260526.81124 | ✅ | ✅ ACK + physical; HA acceptance test passed | off | 2026-10-18 |
 
 **Likely compatible:** plugs managed by the "ECO Plugs" app whose beacon matches
 [PROTOCOL.md §2.1](PROTOCOL.md#21-validation-live). The vendor SDK

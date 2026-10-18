@@ -49,8 +49,21 @@ Identifiers are omitted.
 - `listen` decoded live beacons correctly.
 - `off` sent to the already-off plug got `ACK: plug reports off` on the first attempt.
 
-**Not yet observed:** the integration running in a live HA instance, cloud support
-on, `0x17` alone, a skewed plug clock, other firmware, and other models.
+**2026-10-18: Home Assistant acceptance test** (HAOS, integration from `main` at
+`eacfc73`, HA VM bridged on the plug's subnet). Steps 1–6 passed. Step 7 wasn't run.
+1. The plug was discovered automatically.
+2. The device page showed firmware V2.3.0, and the switch matched the beacon.
+3. A cloud-side toggle (Alexa) showed in HA 2 s after the beacon.
+4. A no-op `turn_on` returned OK in 0.68 s, and `last_changed` didn't change.
+5. `turn_off` then `turn_on` both returned OK in under 0.9 s. HA updated from the
+   ACK about 2 s before the next beacon agreed, with no flicker from the stale
+   beacon. The relay change was confirmed by the beacon, not physically observed.
+6. After an HA Core restart, the switch showed the beacon-derived state with a fresh
+   `last_changed` and `restored=False`. The *unavailable* window was shorter than
+   the 0.5 s polling interval.
+
+**Not yet observed:** cloud support on, `0x17` alone, a skewed plug clock, other
+firmware, and other models.
 
 ## Procedures
 
