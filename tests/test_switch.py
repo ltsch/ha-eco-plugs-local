@@ -236,3 +236,13 @@ async def test_platform_failure_releases_hub(hass: HomeAssistant) -> None:
         await _setup_no_assert(hass)
     hub = get_hub(hass)
     assert hub._users == 0 and hub._transport is None
+
+
+async def test_duplicate_copies_do_not_satisfy_debounce(hass: HomeAssistant) -> None:
+    await _setup(hass)  # debounce 2
+    _beacon(hass, True)
+    off = make_beacon(on=False, key=b"\x09\x09\x09\x09")
+    for _ in range(2):  # one beacon, received on two interfaces
+        get_hub(hass)._on_beacon_datagram(off, ("127.0.0.1", 10229))
+    await hass.async_block_till_done()
+    assert hass.states.get(ENTITY).state == STATE_ON
