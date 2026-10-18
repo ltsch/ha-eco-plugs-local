@@ -2,13 +2,15 @@
 
 ## Unreleased
 
-- Docs: "Open in HACS" button, testing and feedback guide, compatibility list
-  with status levels, richer device-report template.
-- Fix: duplicate copies of one beacon (multi-homed hosts) no longer count twice
-  toward debounce.
-- Docs: Home Assistant acceptance test in LIVE_TESTING.md, and its first result.
+## 0.1.0 (2026-10-18)
 
-## 0.1.0
+First release, tested on one device (see docs/COMPATIBILITY.md).
 
-First release. It provides local switch control with state read from beacons,
-ACK-confirmed commands, and the `tools/ecoplugs.py` CLI. See the README.
+- Local switch control: state comes from the device's beacon, and commands are
+  confirmed by its ACK. State is never restored.
+- Checksum validation, debounce that ignores duplicate copies of a beacon, and
+  staleness handling. A bounded device cache.
+- Discovery-based setup, options, and redacted diagnostics.
+- `tools/ecoplugs.py` CLI with `listen`, `dump`, `on` and `off`.
+- Docs: protocol, reverse-engineering notes, live-test evidence, the HA acceptance
+  test, and a compatibility list.
