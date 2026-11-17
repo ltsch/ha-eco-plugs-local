@@ -97,3 +97,36 @@ UDP endpoint gives you no signal to iterate on.
   locally, so a third host never sees it.
 - **Cloud control.** It works, but the cloud dependency is exactly what this project
   removes.
+
+## 8. The v1.x ("Further") stack
+
+A plug on v1.x firmware never sent the beacon, so the integration couldn't find it. The
+APK holds a second, older stack for such devices, in `com.further.net`. Its protocol is
+in [PROTOCOL_FT.md](PROTOCOL_FT.md).
+
+- **How it was found.** Listening on 10228 and 10229 heard nothing. A capture while
+  the phone app restarted showed the phone broadcasting 128-byte datagrams to ports
+  5888 and 25. Searching the dex for those numbers (`SMARTCTRL_BROADCAST_PORT`,
+  `SMARTCTRL_BROADCAST_PORT2`) led to the stack.
+- **Tools.** `apktool d -r` (smali only), plus a small throwaway dex reader for
+  `static final` constants. Nothing decoded is committed.
+- **Take layouts from `toBytes()` and `ParseBytes()`.** The same class holds both,
+  and they can disagree. The request's `ParseBytes` reads the serial at a different
+  offset from the one `toBytes` writes, and `toBytes` is what goes on the wire.
+- **The send path.** The app queues a packet containing the head, the whole device
+  record and the payload. The sender thread re-reads it and sends only the head and
+  the payload. A hexdump of the queue would mislead you.
+
+| To find | Search for |
+|---|---|
+| Ports | `FtSmartDefine`: `SMARTCTRL_BROADCAST_PORT` (5888), `_PORT2` (25), `SMARTCTRL_DEFAULT_PORT` (6000) |
+| Search request | `FtNetManager.internalSerarchDev` (sic), `FtSmartDefine$DvsSearchRequest.toBytes`, the 8900 bind (`0x22c4`) |
+| Search reply | `FtSmartDefine$DvsSearchRespond.ParseBytes`, `FtNetManager$HandleBroadcastThread.run` (the `0x1770` port check) |
+| Command head | `FtSmartDefine$SmartCtrlHead.toBytes`, `FtNetManager.sendCmd`, `FtNetManager$SendCMDThread.run` |
+| Switch commands | `0x50016` in `MainActivity$i2`, `0x50017` in `MainActivity$r2`, `FtSmartDefine$SwitchStatus` |
+| Other commands | the `CMD_*` constants in `FtSmartDefine` |
+
+To redo this for a new app build, diff the same offsets against PROTOCOL_FT.md, then
+test with the safety rules in [LIVE_TESTING.md](LIVE_TESTING.md#safety-first). The plug
+silently ignores a malformed command, so check the packet by a status query before
+trying a set.

@@ -26,7 +26,10 @@ from .const import (
     DOMAIN,
     MANUFACTURER,
 )
+from .entity_ft import probe_support
 from .hub import EcoPlugsHub, Sighting
+from .hub_ft import EcoPlugsFtHub
+from .switch_ft import EcoPlugFtDstSwitch, EcoPlugFtRandomSwitch, EcoPlugFtSwitch
 
 
 async def async_setup_entry(
@@ -35,7 +38,19 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Add the switch for a config entry."""
-    async_add_entities([EcoPlugSwitch(entry.runtime_data, entry)])
+    hub = entry.runtime_data
+    if isinstance(hub, EcoPlugsFtHub):
+        uid = entry.unique_id or ""
+        entities = [EcoPlugFtSwitch(hub, entry), EcoPlugFtDstSwitch(hub, entry)]
+        # The random flag comes from the timer reads, which an older plug may not answer.
+        _, supported = await probe_support(
+            hub, uid, lambda: hub.async_get_timers(uid, attempts=1)
+        )
+        if supported:
+            entities.append(EcoPlugFtRandomSwitch(hub, entry))
+        async_add_entities(entities)
+    else:
+        async_add_entities([EcoPlugSwitch(hub, entry)])
 
 
 class EcoPlugSwitch(SwitchEntity):
@@ -136,9 +151,10 @@ class EcoPlugSwitch(SwitchEntity):
 
     @callback
     def _update_sw_version(self) -> None:
-        registry = dr.async_get(self.hass)
-        if device := registry.async_get_device(identifiers={(DOMAIN, self._uid)}):
-            registry.async_update_device(device.id, sw_version=self._firmware)
+        if (device := self.device_entry) is not None:
+            dr.async_get(self.hass).async_update_device(
+                device.id, sw_version=self._firmware
+            )
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         await self._async_set(True)

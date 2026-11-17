@@ -3,15 +3,15 @@
     "step": {
       "user": {
         "title": "Choose a plug",
-        "description": "These Eco Plugs devices were heard broadcasting on your network.",
+        "description": "These Eco Plugs devices were found on your network.",
         "data": {
           "device": "Plug"
         }
       }
     },
     "abort": {
-      "no_devices_found": "No Eco Plugs beacons were heard in {seconds} seconds. Check that the plug is powered and on the same subnet as Home Assistant, and that Home Assistant uses host networking.",
-      "port_unavailable": "Could not listen on UDP port {port}. Another program on this host may be using it.",
+      "no_devices_found": "No Eco Plugs devices were found in {seconds} seconds. Check that the plug is powered and on the same subnet as Home Assistant, and that Home Assistant uses host networking.",
+      "port_unavailable": "Could not open UDP port {port}. Another program on this host may be using it.",
       "already_configured": "This plug is already configured.",
       "already_in_progress": "This plug is already being set up."
     }
@@ -19,11 +19,157 @@
   "options": {
     "step": {
       "init": {
+        "title": "Eco Plugs (Local)",
+        "menu_options": {
+          "settings": "Polling and availability",
+          "add_timer": "Add a timer",
+          "edit_timer": "Change a timer",
+          "delete_timer": "Delete a timer"
+        }
+      },
+      "settings": {
         "data": {
-          "debounce": "Consecutive beacons required to accept a state change",
-          "stale_timeout": "Seconds without a beacon before the plug is unavailable"
+          "debounce": "Consecutive beacons to accept a state change (beacon plugs only)",
+          "stale_timeout": "Unavailable after no reply for",
+          "poll_interval": "Poll interval (v1.x plugs only)"
         },
-        "title": "Eco Plugs (Local) options"
+        "title": "Eco Plugs (Local) options",
+        "description": "Under about 5 seconds between polls the vendor app can't control a v1.x plug."
+      },
+      "add_timer": {
+        "title": "Add a timer",
+        "description": "The plug switches on at the first time and off at the second, on the chosen days. It runs the timer itself, even when Home Assistant is down.",
+        "data": {
+          "days": "Days",
+          "start": "Switch on at",
+          "end": "Switch off at"
+        }
+      },
+      "edit_timer": {
+        "title": "Change a timer",
+        "description": "Which timer?",
+        "data": {
+          "timer": "Timer"
+        }
+      },
+      "edit_timer_details": {
+        "title": "Change a timer",
+        "data": {
+          "days": "Days",
+          "start": "Switch on at",
+          "end": "Switch off at"
+        }
+      },
+      "delete_timer": {
+        "title": "Delete a timer",
+        "description": "Which timer?",
+        "data": {
+          "timer": "Timer"
+        }
+      },
+      "confirm_delete": {
+        "title": "Delete this timer?",
+        "description": "{timer}",
+        "menu_options": {
+          "delete_now": "Delete it",
+          "init": "Keep it and go back"
+        }
+      }
+    },
+    "error": {
+      "no_days": "Choose at least one day.",
+      "write_failed": "The plug did not take the change: {error}"
+    },
+    "abort": {
+      "no_timers": "The plug has no timers.",
+      "not_loaded": "Enable the plug's device in Home Assistant first.",
+      "cannot_connect": "The plug did not answer.",
+      "write_failed": "The plug did not take the change: {error}"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "energy_today": {
+        "name": "Energy today"
+      },
+      "clock_difference": {
+        "name": "Clock difference"
+      },
+      "timers": {
+        "name": "Timers"
+      }
+    },
+    "switch": {
+      "dst": {
+        "name": "Daylight saving time"
+      },
+      "random_timers": {
+        "name": "Random timers"
+      }
+    }
+  },
+  "services": {
+    "add_timer": {
+      "name": "Add timer",
+      "description": "Adds a timer to the plug. It switches on at the start time and off at the end time, on the chosen days. The plug runs it itself, even when Home Assistant is down.",
+      "fields": {
+        "days": {
+          "name": "Days",
+          "description": "The days the timer runs."
+        },
+        "start": {
+          "name": "Switch on at",
+          "description": "The time the plug switches on."
+        },
+        "end": {
+          "name": "Switch off at",
+          "description": "The time the plug switches off."
+        }
+      }
+    },
+    "update_timer": {
+      "name": "Update timer",
+      "description": "Changes a timer. Whatever you leave out stays as it was. The timer's id is in the Timers sensor's attributes.",
+      "fields": {
+        "timer_id": {
+          "name": "Timer id",
+          "description": "The id shown in the Timers sensor's attributes."
+        },
+        "days": {
+          "name": "Days",
+          "description": "The days the timer runs."
+        },
+        "start": {
+          "name": "Switch on at",
+          "description": "The time the plug switches on."
+        },
+        "end": {
+          "name": "Switch off at",
+          "description": "The time the plug switches off."
+        }
+      }
+    },
+    "delete_timer": {
+      "name": "Delete timer",
+      "description": "Removes a timer from the plug.",
+      "fields": {
+        "timer_id": {
+          "name": "Timer id",
+          "description": "The id shown in the Timers sensor's attributes."
+        }
+      }
+    }
+  },
+  "selector": {
+    "weekday": {
+      "options": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
       }
     }
   }

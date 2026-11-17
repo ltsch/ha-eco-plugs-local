@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -12,8 +13,10 @@ from custom_components.eco_plugs_local.diagnostics import (
     async_get_config_entry_diagnostics,
 )
 from custom_components.eco_plugs_local.hub import get_hub
+from custom_components.eco_plugs_local.hub_ft import get_ft_hub
 
 from .beacon_factory import FAKE, make_beacon
+from .ft_factory import FAKE_FT, make_search_reply
 
 
 async def test_diagnostics_redacted(hass: HomeAssistant) -> None:
@@ -42,3 +45,29 @@ async def test_diagnostics_redacted(hass: HomeAssistant) -> None:
         assert secret not in text, secret
     assert '"is_on": true' in text
     assert '"firmware": 230' in text
+
+
+@patch("custom_components.eco_plugs_local.hub_ft.REPLY_TIMEOUT", 0.05)
+async def test_ft_diagnostics_redacted(hass: HomeAssistant) -> None:
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test FT Plug",
+        unique_id="020000000002",
+        data={"mac": "02:00:00:00:00:02", "device_id": "ECO-00000002", "family": "ft"},
+    )
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    get_ft_hub(hass)._on_datagram(make_search_reply(), ("192.0.2.20", 25))
+
+    text = json.dumps(await async_get_config_entry_diagnostics(hass, entry))
+    for secret in (
+        FAKE_FT["password"],
+        FAKE_FT["password"].encode().hex(),
+        "192.0.2.20",
+        "02:00:00:00:00:02",
+        "ECO-00000002",
+        "Test FT Plug",
+        "auth",
+    ):
+        assert secret not in text, secret
+    assert '"version": "1.6.0"' in text

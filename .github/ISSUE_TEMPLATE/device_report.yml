@@ -4,7 +4,7 @@ labels: [device-report]
 body:
   - type: markdown
     attributes:
-      value: Do not paste MACs, IPs, tokens or names. `tools/ecoplugs.py dump` masks them.
+      value: "Do not paste MACs, IPs, tokens or names. `tools/ecoplugs.py dump` (or `ft-search --masked` for v1.x plugs) masks them."
   - type: input
     id: hardware
     attributes:
@@ -32,12 +32,12 @@ body:
   - type: dropdown
     id: beacon
     attributes:
-      label: Does `tools/ecoplugs.py listen` see it and track state?
+      label: "Does `tools/ecoplugs.py listen` see it and track state? (v1.x plugs: does `ft-search` find it, and `ft-status` read it?)"
       options: ["yes", "no", "partially"]
   - type: dropdown
     id: command
     attributes:
-      label: Does `tools/ecoplugs.py on/off` get an ACK and switch it?
+      label: "Does `tools/ecoplugs.py on/off` (or `ft-on`/`ft-off`) get an ACK and switch it?"
       options: ["yes", "no", "not tried"]
   - type: dropdown
     id: ha
@@ -51,7 +51,7 @@ body:
   - type: textarea
     id: dump
     attributes:
-      label: Output of `python3 tools/ecoplugs.py dump`
+      label: "Output of `python3 tools/ecoplugs.py dump` (v1.x plugs: `ft-search --masked`)"
       render: text
     validations:
       required: true

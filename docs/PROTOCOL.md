@@ -2,7 +2,8 @@
 
 This is the reference that `custom_components/eco_plugs_local/protocol.py` implements.
 It covers current-firmware Eco Plugs (KAB) plugs and the "ECO Plugs" Android app
-(`com.kab.unlimit`). It was derived from app **2.98.260526.81124** and plug firmware
+(`com.kab.unlimit`). Plugs on v1.x firmware use a different protocol, described in
+[PROTOCOL_FT.md](PROTOCOL_FT.md). It was derived from app **2.98.260526.81124** and plug firmware
 **V2.3.0**.
 
 **Evidence tags:**

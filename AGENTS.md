@@ -9,6 +9,7 @@ project does.
 |---|---|
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | before touching any integration code |
 | [docs/PROTOCOL.md](docs/PROTOCOL.md) | before touching `protocol.py` or `hub.py`; it defines the evidence tags |
+| [docs/PROTOCOL_FT.md](docs/PROTOCOL_FT.md) | before touching `protocol_ft.py` or `hub_ft.py` (v1.x plugs) |
 | [docs/REVERSE_ENGINEERING.md](docs/REVERSE_ENGINEERING.md) | for new app or firmware versions, or before "simplifying" the protocol |
 | [docs/LIVE_TESTING.md](docs/LIVE_TESTING.md) | before any contact with real hardware |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | for setup and releases |
@@ -24,7 +25,7 @@ project does.
    `tests/real_beacons.py`.
 3. **Don't send commands to real plugs** without explicit human approval each time.
    Follow [LIVE_TESTING.md](docs/LIVE_TESTING.md#safety-first).
-4. **`protocol.py` imports nothing from Home Assistant.**
+4. **`protocol.py` and `protocol_ft.py` import nothing from Home Assistant.**
 5. **Never restore or assume state.**
 6. **State each fact once,** in the doc that owns it, and link to it from everywhere
    else. Update that doc in the same change. Keep text short.

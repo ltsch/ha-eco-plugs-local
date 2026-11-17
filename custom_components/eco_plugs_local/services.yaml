@@ -1,0 +1,83 @@
+add_timer:
+  target:
+    entity:
+      integration: eco_plugs_local
+      domain: sensor
+  fields:
+    days:
+      required: true
+      example: '["monday", "tuesday"]'
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+    start:
+      required: true
+      example: "08:00:00"
+      selector:
+        time:
+    end:
+      required: true
+      example: "20:30:00"
+      selector:
+        time:
+
+update_timer:
+  target:
+    entity:
+      integration: eco_plugs_local
+      domain: sensor
+  fields:
+    timer_id:
+      required: true
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 255
+          mode: box
+    days:
+      example: '["monday", "tuesday"]'
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+    start:
+      example: "08:00:00"
+      selector:
+        time:
+    end:
+      example: "20:30:00"
+      selector:
+        time:
+
+delete_timer:
+  target:
+    entity:
+      integration: eco_plugs_local
+      domain: sensor
+  fields:
+    timer_id:
+      required: true
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 255
+          mode: box
